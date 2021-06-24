@@ -2,31 +2,36 @@
   <div class="content">
     <div class="content_post">
       <div class="content_post_icon">
-        <img :src="this.profile.avatar_url" alt="" />
+        <img :src="this.Profile.avatar_url" alt="" />
       </div>
       <div class="content_post_info">
         <div class="content_post_info-link">
-          <a href="#">{{ this.profile }}</a>
+          <a :href="linkGitHub">{{ this.Profile.login }}</a>
         </div>
         <div class="content_post_info-date">
-          <p>{{}}</p>
+          <p>{{ dateCreate(this.Profile.created_at) }}</p>
         </div>
       </div>
     </div>
     <div class="content_repos">
+      <div class="content_repos-heading">
+        <h2>Репозитории пользователя</h2>
+      </div>
       <ul>
-        <li>
+        <li v-for="(item, i) in this.Reposit" :key="item.id">
           <div class="content_repos-name">
-            <a href="#"></a>
+            <a :href="item.html_url">
+              {{ item.name }}
+            </a>
           </div>
           <div class="content_repos-descript">
-            <p>{{}}</p>
+            <p>{{ item.description }}</p>
           </div>
           <div class="content_repos-lang">
-            <p>{{}}</p>
+            <p>{{ this.listLang[i] }}</p>
           </div>
           <div class="content_repos-date">
-            <p>{{}}</p>
+            <p>{{ dateCreate(item.created_at) }}</p>
           </div>
         </li>
       </ul>
@@ -46,18 +51,42 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
-    return {};
+    return {
+      listLang: [],
+    };
   },
   mounted() {
- this.dataProfile();
- console.log(this.profile);   
+    this.dataProfile();
+    this.dataReposit();
+    this.Reposit.map((url) => {
+      this.RepositLang(url.languages_url);
+    });
   },
-  computed: mapState(["profile"]),
+  updated() {
+    console.log(this.Langage);
+  },
+  computed: {
+    ...mapGetters(["Profile", "Reposit", "Langage"]),
+    linkGitHub() {
+      return `https://github.com/${this.Profile.login}`;
+    },
+  },
   methods: {
-    ...mapActions(["dataProfile"],),
+    ...mapActions(["dataProfile", "dataReposit"]),
+    dateCreate(date) {
+      const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
+      return date.replace(regex, `$3:$2:$1`);
+    },
+    RepositLang(url) {
+      this.axios.get(url).then((response) => {
+        console.log(response.data);
+        this.listLang.push(response.data != {} ? response.data : "Неизвестно");
+      });
+    },
+    //
   },
 };
 </script>

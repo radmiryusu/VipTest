@@ -8,41 +8,44 @@ Vue.use(Vuex);
 Vue.use(VueAxios, axios);
 export default new Vuex.Store({
   state: {
-    person: "radmiryusu",
+    person: "ezmobius",
     profile: {}, //профиль пользователя
     listReposit: [], //список репозитория
     listSub: [], //список подписок
     listTeam: [], //список пользователей
   },
   actions: {
+    //получение профился пользователя
     dataProfile({ commit, state }) {
       axios
-        .get("https://api.github.com/users/" + state.person)
-        .then((res) => {
-          commit("ListProfile", res.data);
-      });
+        .get(`https://api.github.com/users/${state.person}`)
+        .then((respons) => {
+          commit("ListProfile", respons.data);
+        });
     },
+    //получение репозиториев пользователя
     dataReposit({ commit, state }) {
       axios
-        .get(`https://api.github.com/users/${state.person}/repos_url`)
-        .then((data) => {
-          commit("ListReposit", data);
+        .get(`https://api.github.com/users/${state.person}/repos`)
+        .then((respons) => {
+          commit("ListReposit", respons.data);
         });
     },
+    //получение списка подписок
     dataSubscribers({ commit, state }) {
       axios
-        .get(`https://api.github.com/users/${state.person}/following_url`)
+        .get(`https://api.github.com/users/${state.person}/following`)
         .then((data) => {
           commit("ListSubscribers", data);
         });
     },
+    //получение списка теор. команды
     dataPersons({ commit }) {
-      axios
-        .get("https://api.github.com/users?since=50000000")
-        .then((data) => {
-          commit("ListSubscribers", data);
-        });
+      axios.get("https://api.github.com/users?since=50000000").then((data) => {
+        commit("ListSubscribers", data);
+      });
     },
+   
   },
   mutations: {
     ListProfile(state, data) {
@@ -57,10 +60,16 @@ export default new Vuex.Store({
     AllPersons(state, data) {
       state.listTeam = data;
     },
+    AllRepositLang(state, data) {
+      state.listLang = data;
+    },
   },
   getters: {
     Profile(state) {
       return state.profile;
+    },
+    Reposit(state) {
+      return state.listReposit;
     },
   },
 });
