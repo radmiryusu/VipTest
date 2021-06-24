@@ -28,6 +28,10 @@ export default new Vuex.Store({
       axios
         .get(`https://api.github.com/users/${state.person}/repos`)
         .then((respons) => {
+          respons.data.forEach((url) => {
+            let result = axios.get(url.languages_url);
+            url.lang = Object.keys(result);
+          });
           commit("ListReposit", respons.data);
         });
     },
@@ -45,7 +49,11 @@ export default new Vuex.Store({
         commit("ListSubscribers", data);
       });
     },
-   
+    RepositLang({ commit }, url) {
+      this.axios.get(url).then((response) => {
+        commit("AllLang", [response.data, url]);
+      });
+    },
   },
   mutations: {
     ListProfile(state, data) {

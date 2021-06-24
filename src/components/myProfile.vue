@@ -17,8 +17,8 @@
       <div class="content_repos-heading">
         <h2>Репозитории пользователя</h2>
       </div>
-      <ul>
-        <li v-for="(item, i) in this.Reposit" :key="item.id">
+      <ul class="content_repos-heading-list">
+        <li v-for="(item) in this.Reposit" :key="item.id">
           <div class="content_repos-name">
             <a :href="item.html_url">
               {{ item.name }}
@@ -28,7 +28,7 @@
             <p>{{ item.description }}</p>
           </div>
           <div class="content_repos-lang">
-            <p>{{ this.listLang[i] }}</p>
+            <p>{{ item.lang }}</p>
           </div>
           <div class="content_repos-date">
             <p>{{ dateCreate(item.created_at) }}</p>
@@ -54,40 +54,30 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
-    return {
-      listLang: [],
-    };
+    return {};
   },
   mounted() {
     this.dataProfile();
     this.dataReposit();
-    this.Reposit.map((url) => {
-      this.RepositLang(url.languages_url);
-    });
-  },
-  updated() {
-    console.log(this.Langage);
   },
   computed: {
-    ...mapGetters(["Profile", "Reposit", "Langage"]),
+    ...mapGetters(["Profile", "Reposit"]),
     linkGitHub() {
       return `https://github.com/${this.Profile.login}`;
     },
   },
   methods: {
-    ...mapActions(["dataProfile", "dataReposit"]),
+    ...mapActions(["dataProfile", "dataReposit", "RepositLang"]),
     dateCreate(date) {
       const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
       return date.replace(regex, `$3:$2:$1`);
     },
-    RepositLang(url) {
-      this.axios.get(url).then((response) => {
-        console.log(response.data);
-        this.listLang.push(response.data != {} ? response.data : "Неизвестно");
-      });
-    },
-    //
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.content_repos-heading-list {
+  height: 300px;
+  overflow-y: scroll;
+}
+</style>
