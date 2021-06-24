@@ -79,7 +79,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scope>
 .content {
   width: 80%;
   margin: 0 auto;

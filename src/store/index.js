@@ -30,19 +30,21 @@ export default new Vuex.Store({
         .then((respons) => {
           let data = [];
           respons.data.forEach((url) => {
-            axios.get(url.languages_url).then((res) => {
-              url.lang = Object.keys(res.data);
-            }).then( data.push(url));
-           ;
+            axios
+              .get(url.languages_url)
+              .then((res) => {
+                url.lang = Object.keys(res.data);
+              })
+              .then(data.push(url));
           });
           commit("ListReposit", respons.data);
-          
+
           //данные правильно не отображаются
           /*   setTimeout(() => {
             commit("ListReposit", respons.data); крайнии вариант
           }, 2000); */
-        })
-       /*  .then((respons) => {
+        });
+      /*  .then((respons) => {
          
         }); */
     },
