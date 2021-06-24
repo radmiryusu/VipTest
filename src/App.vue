@@ -9,6 +9,19 @@
 </template>
 
 <style lang="scss">
+html,body{
+  padding: 0;
+  margin: 0;
+}
+*{
+  box-sizing: border-box;
+}
+a{
+  text-decoration: none;
+}
+li{
+  list-style: none;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

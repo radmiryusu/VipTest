@@ -17,8 +17,12 @@
       <div class="content_repos-heading">
         <h2>Репозитории пользователя</h2>
       </div>
-      <ul class="content_repos-heading-list">
-        <li v-for="(item) in this.Reposit" :key="item.id">
+      <ul class="content_repos-list">
+        <li
+          class="content_repos-list-item"
+          v-for="item in this.Reposit"
+          :key="item.id"
+        >
           <div class="content_repos-name">
             <a :href="item.html_url">
               {{ item.name }}
@@ -76,8 +80,80 @@ export default {
 };
 </script>
 <style lang="scss">
-.content_repos-heading-list {
-  height: 300px;
-  overflow-y: scroll;
+.content {
+  width: 80%;
+  margin: 0 auto;
+
+  &_post {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(89, 158, 137, 0.867);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 0 auto;
+    &_icon {
+      width: 200px;
+      height: 200px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
+    &_info {
+      &-link {
+        margin: 10px 0;
+        a {
+          font-size: 1.6rem;
+          color: rgb(46, 84, 85);
+          transition: 0.5s;
+          &:hover {
+            color: rgb(0, 0, 0);
+          }
+        }
+      }
+      &-date {
+        p {
+          font-weight: 800;
+        }
+      }
+    }
+  }
+  &_repos {
+    &-heading {
+    }
+    &-list {
+        padding: 0;
+        background: rgb(80, 164, 167);
+        overflow-y: scroll;
+        height: 350px;
+      &-item {
+          padding: 3px 10px;
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+        justify-content: space-between;
+        align-content: center;
+        border-bottom: 1px solid rgb(179, 179, 179);
+        transition: 0.5s;
+        &:hover{
+            background: rgb(175, 175, 175);
+        }
+      }
+    }
+    &-name,
+    &-description,
+    &-lang,
+    &-date {
+      display: flex;
+      align-items: center;
+    }
+    &-description{
+        justify-content: center;
+    }
+     &-date{
+         justify-content: flex-end;
+     }
+  }
 }
 </style>
