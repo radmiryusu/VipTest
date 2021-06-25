@@ -19,53 +19,46 @@ export default new Vuex.Store({
     dataProfile({ commit, state }) {
       axios
         .get(`https://api.github.com/users/${state.person}`)
-        .then((respons) => {
-          commit("ListProfile", respons.data);
+        .then((resolve) => {
+          commit("ListProfile", resolve.data);
         });
     },
     //получение репозиториев пользователя
     dataReposit({ commit, state }) {
       axios
         .get(`https://api.github.com/users/${state.person}/repos`)
-        .then((respons) => {
+        .then((resolve) => {
           let data = [];
-          respons.data.forEach((url) => {
-            axios
-              .get(url.languages_url)
-              .then((res) => {
-                url.lang = Object.keys(res.data);
-              })
-              .then(data.push(url));
+          resolve.data.forEach(async (url) => {
+            await axios.get(url.languages_url).then((res) => {
+              url.lang = Object.keys(res.data);
+              data.push(url);
+            });
           });
-          commit("ListReposit", respons.data);
-
-          //данные правильно не отображаются
-          /*   setTimeout(() => {
-            commit("ListReposit", respons.data); крайнии вариант
-          }, 2000); */
+          return data;
+        })
+        .then((data) => {
+          commit("ListReposit", data);
         });
-      /*  .then((respons) => {
-         
-        }); */
     },
     //получение списка подписок
     dataSubscribers({ commit, state }) {
       axios
-        .get(`https://api.github.com/users/${state.person}/following`)
-        .then((data) => {
-          commit("ListSubscribers", data);
+        .get(`https://api.github.com/users/${state.person}/following_url`)
+        .then((resolve) => {
+          commit("ListSubscribers", resolve.data);
         });
     },
     //получение списка теор. команды
     dataPersons({ commit }) {
-      axios.get("https://api.github.com/users?since=50000000").then((data) => {
-        commit("ListSubscribers", data);
-      });
+      axios
+        .get("https://api.github.com/users?since=50000000")
+        .then((resolve) => {
+          commit("AllPersons", resolve.data);
+        });
     },
-    RepositLang({ commit }, url) {
-      this.axios.get(url).then((response) => {
-        commit("AllLang", [response.data, url]);
-      });
+    newPersonsList({ commit }, data) {
+      commit("AllPersons", data);
     },
   },
   mutations: {
@@ -81,9 +74,6 @@ export default new Vuex.Store({
     AllPersons(state, data) {
       state.listTeam = data;
     },
-    AllRepositLang(state, data) {
-      state.listLang = data;
-    },
   },
   getters: {
     Profile(state) {
@@ -91,6 +81,12 @@ export default new Vuex.Store({
     },
     Reposit(state) {
       return state.listReposit;
+    },
+    Subscribers(state) {
+      return state.listSub;
+    },
+    AllPerson(state) {
+      return state.listTeam;
     },
   },
 });

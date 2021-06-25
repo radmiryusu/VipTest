@@ -32,7 +32,10 @@
             <p>{{ item.description }}</p>
           </div>
           <div class="content_repos-lang">
-            <p>{{ item.lang }}</p>
+            <p>{{ LangSplit(item.lang) }}</p>
+          </div>
+          <div class="content_repos-link">
+            <p>{{ item.clone_url }}</p>
           </div>
           <div class="content_repos-date">
             <p>{{ dateCreate(item.created_at) }}</p>
@@ -41,13 +44,13 @@
       </ul>
     </div>
     <div class="content_sub">
-      <ul>
-        <li>
+      <ul class="content_sub-list">
+        <li class="content_sub-item" v-for="item in Subscribers" :key="item.id">
           <div class="content_sub-img">
-            <img src="" alt="" />
-            <div class="content_sub-link">
-              <a href="#"> {{}} </a>
-            </div>
+            <img :src="item.avatar_url" alt="" />
+          </div>
+          <div class="content_sub-link">
+            <a :href="item.html_url"> {{ item.name }} </a>
           </div>
         </li>
       </ul>
@@ -63,26 +66,30 @@ export default {
   mounted() {
     this.dataProfile();
     this.dataReposit();
+    this.dataSubscribers();
   },
   computed: {
-    ...mapGetters(["Profile", "Reposit"]),
+    ...mapGetters(["Profile", "Reposit", "Subscribers"]),
     linkGitHub() {
       return `https://github.com/${this.Profile.login}`;
     },
   },
   methods: {
-    ...mapActions(["dataProfile", "dataReposit", "RepositLang"]),
+    ...mapActions(["dataProfile", "dataReposit", "dataSubscribers"]),
     dateCreate(date) {
       const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
       return date.replace(regex, `$3:$2:$1`);
     },
+    LangSplit(list) {
+      return list;
+    },
   },
 };
 </script>
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .content {
   width: 80%;
-  margin: 0 auto;
+  margin: 20px auto;
 
   &_post {
     display: inline-flex;
@@ -124,36 +131,90 @@ export default {
     &-heading {
     }
     &-list {
-        padding: 0;
-        background: rgb(80, 164, 167);
-        overflow-y: scroll;
-        height: 350px;
+      padding: 0;
+      background: rgb(80, 164, 167);
+      overflow-y: scroll;
+      height: 350px;
       &-item {
-          padding: 3px 10px;
-        display: grid;
-        grid-template-columns: 1fr 2fr 1fr 1fr;
+        padding: 3px 10px;
+        display: flex;
+        height: 50px;
         justify-content: space-between;
         align-content: center;
         border-bottom: 1px solid rgb(179, 179, 179);
         transition: 0.5s;
-        &:hover{
-            background: rgb(175, 175, 175);
+
+        &:hover {
+          background: rgb(175, 175, 175);
         }
       }
     }
     &-name,
-    &-description,
+    &-descript,
     &-lang,
-    &-date {
+    &-date,
+    &-link {
+      * {
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+      }
+    }
+    &-name,
+    &-descript,
+    &-lang,
+    &-date,
+    &-link {
       display: flex;
       align-items: center;
+      justify-content: center;
+      width: 25%;
     }
-    &-description{
-        justify-content: center;
+    &-description,
+    &-lang {
+      justify-content: center;
     }
-     &-date{
-         justify-content: flex-end;
-     }
+    &-date {
+      justify-content: flex-end;
+    }
+  }
+  &_sub {
+    background: rgb(80, 164, 167);
+    height: 350px;
+    &-list {
+      overflow-y: scroll;
+      height: 100%;
+      padding: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &-item {
+      display: flex;
+      padding: 3px 10px;
+      width: 50%;
+      transition: 0.5s;
+      &:hover {
+        background: rgb(63, 130, 133);
+      }
+    }
+    &-img {
+      height: 60px;
+      width: 60px;
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+    &-link {
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      a {
+        color: #000;
+        font-size: 18px;
+      }
+    }
   }
 }
 </style>
