@@ -63,7 +63,7 @@
               <p :title="item.description">{{ item.description }}</p>
             </td>
             <td>
-              <p :title="LangSplit(item.lang)">{{ LangSplit(item.lang) }}</p>
+              <p :title="item.lang">{{ item.lang }}</p>
             </td>
             <td>
               <p :title="item.clone_url">{{ item.clone_url }}</p>
@@ -127,7 +127,7 @@ export default {
         transition: 0.5s;
 
         &:hover {
-          background:$backgroundItemHover;
+          background: $backgroundItemHover;
         }
       }
     }
@@ -197,15 +197,9 @@ th {
 .card {
   width: 30%;
   padding: 10px;
-  &-img {
-    &-top {
-    }
-  }
   &-image {
     width: 100%;
     border-radius: 5px;
-  }
-  &-body {
   }
   &-title {
     margin: 10px 0;
