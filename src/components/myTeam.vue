@@ -163,8 +163,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "../scss/color.scss";
 .content {
-  background: #e2e2e2;
+  background: $backgroundBlock;
   border-radius: 5px;
   width: 80%;
   margin: 0 auto;
@@ -180,7 +181,7 @@ export default {
   padding: 10px;
   width: 50%;
   margin: 10px;
-  background: #fff;
+  background: $backgroundWhite;
   border-radius: 5px;
   &-heading {
     display: flex;
@@ -196,7 +197,7 @@ export default {
   }
   &_container {
     overflow-y: scroll;
-    background: #e2e2e2;
+    background: $backgroundBlock;
     height: 300px;
   }
   &_list {
@@ -215,12 +216,12 @@ export default {
       display: flex;
       align-items: center;
       transition: 0.5s;
-      border-bottom: 1px solid rgb(155, 155, 155);
+      border-bottom: 1px solid $borderItem;
       &:hover {
-        background: rgb(155, 155, 155);
+        background: $backgroundItemHover;
       }
       &:first-child {
-        border-top: 1px solid rgb(155, 155, 155);
+        border-top: 1px solid $borderItem;
       }
     }
     &-name {
@@ -249,7 +250,7 @@ export default {
   }
 }
 .active {
-  background: rgb(155, 155, 155);
+  background: $backgroundItemHover;
 }
 @media (min-width: 320px) and (max-width: 479px) {
   .content {

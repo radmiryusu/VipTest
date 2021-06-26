@@ -2,14 +2,18 @@
   <div class="content">
     <div class="card">
       <div class="card-img-top">
-        <img class="card-img-top" :src="this.Profile.avatar_url" alt="" />
+        <img class="card-image" :src="this.Profile.avatar_url" alt="" />
       </div>
       <div class="card-body">
-        <div class="content_post_info-link">
-          <a class="card-title" :href="linkGitHub">{{ this.Profile.login }}</a>
+        <div class="card-title">
+          <a class="card-title-link" :href="linkGitHub">{{
+            this.Profile.login
+          }}</a>
         </div>
-        <div class="content_post_info-date">
-          <p class="card-text">{{ dateCreate(this.Profile.created_at) }}</p>
+        <div class="card-footer">
+          <p class="card-footer-text">
+            {{ dateCreate(this.Profile.created_at) }}
+          </p>
         </div>
       </div>
     </div>
@@ -97,69 +101,33 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "../scss/color.scss";
 .content {
   width: 90%;
-  background: #e2e2e2;
+  background: $backgroundBlock;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-
-  &_post {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(89, 158, 137, 0.867);
-    border-radius: 5px;
-    padding: 20px;
-    margin: 0 auto;
-    &_icon {
-      width: 200px;
-      height: 200px;
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 5px;
-      }
-    }
-    &_info {
-      &-link {
-        margin: 10px 0;
-        a {
-          font-size: 1.6rem;
-          color: rgb(46, 84, 85);
-          transition: 0.5s;
-          &:hover {
-            color: rgb(0, 0, 0);
-          }
-        }
-      }
-      &-date {
-        p {
-          font-weight: 800;
-        }
-      }
-    }
-  }
   &_repos {
     width: 100%;
-    background: #fff;
+    background: $backgroundWhite;
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
     &-list {
-      background: #e2e2e2;
+      background: $backgroundBlock;
       padding: 0;
       overflow-y: scroll;
       height: 450px;
       &-item {
-        border-bottom: 1px solid rgb(179, 179, 179);
+        border-bottom: 1px solid $borderItem;
         transition: 0.5s;
 
         &:hover {
-          background: rgb(175, 175, 175);
+          background:$backgroundItemHover;
         }
       }
     }
@@ -172,7 +140,7 @@ export default {
     }
   }
   &_sub {
-    background: #fff;
+    background: $backgroundWhite;
     padding: 10px;
     border-radius: 5px;
     margin-left: 10px;
@@ -181,10 +149,11 @@ export default {
       height: 40px;
     }
     &-list {
+      padding: 0;
+      background: $backgroundBlock;
       min-height: 350px;
       overflow-y: scroll;
       height: calc(100% - 40px);
-      padding: 10px 0;
       display: flex;
       flex-wrap: wrap;
     }
@@ -194,7 +163,7 @@ export default {
       width: 50%;
       transition: 0.5s;
       &:hover {
-        background: rgb(63, 130, 133);
+        background: $backgroundItemHover;
       }
     }
     &-img {
@@ -211,7 +180,7 @@ export default {
       display: flex;
       align-items: center;
       a {
-        color: #000;
+        color: $colorLink;
         font-size: 18px;
       }
     }
@@ -219,15 +188,44 @@ export default {
 }
 .table {
   &_heading {
-    background: #909090;
+    background: $backgroundTable;
   }
 }
 th {
-  color: #fff;
+  color: $colorWhite;
 }
 .card {
   width: 30%;
   padding: 10px;
+  &-img {
+    &-top {
+    }
+  }
+  &-image {
+    width: 100%;
+    border-radius: 5px;
+  }
+  &-body {
+  }
+  &-title {
+    margin: 10px 0;
+    &-link {
+      font-size: 1.6rem;
+      color: $colorLink;
+      transition: 0.5s;
+      text-decoration: none;
+      &:hover {
+        color: $colorCardHover;
+      }
+    }
+  }
+  &-footer {
+    background: $backgroundWhite;
+    border: none;
+    &-text {
+      font-weight: 800;
+    }
+  }
 }
 @media (min-width: 320px) and (max-width: 479px) {
   .content {
