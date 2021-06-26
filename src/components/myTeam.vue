@@ -133,8 +133,7 @@ export default {
             data.push(item);
           });
           data.push(item);
-          console.log(data);
-          this.$store.dispatch("newPersonsList", data);
+           this.newPersonsList(data);
           this.trueId = "";
         }
       });
