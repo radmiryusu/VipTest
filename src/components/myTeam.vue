@@ -1,23 +1,15 @@
 <template>
-  <div class="content row">
-    <div class="serch col-4">
-      <input
-        class="serch-input"
-        type="text"
-        name=""
-        id=""
-        @change="Onchanch()"
-        v-model="serchData"
-      />
-    </div>
-    <div class="content_forms row">
-      <div class="team col-6">
+  <div class="content">
+    <div class="content_forms">
+      <div class="team">
         <div class="team-heading">
           <div class="team-title">
-            <h2>список команды</h2>
+            <h2 class="team-title-heading">Cписок команды</h2>
           </div>
           <div class="team-sort">
-            <b-button @click="SortFriend()" variant="secondary">sort</b-button>
+            <b-button @click="SortFriend()" variant="btn btn-outline-secondary"
+              >sort</b-button
+            >
           </div>
         </div>
         <div class="team_container">
@@ -45,12 +37,21 @@
           >
         </div>
       </div>
-      <div class="users col-6">
+      <div class="users">
         <div class="users-heading">
           <div class="users-title">
-            <h2>список команды</h2>
+            <h2 class="users-title-heading">Cписок git</h2>
           </div>
-        
+          <div class="users-serch">
+            <input
+              class="users-serch-input"
+              type="text"
+              name=""
+              id=""
+              @change="SearchPerson"
+              v-model="serchData"
+            />
+          </div>
         </div>
         <div class="users_container">
           <ul class="users_list">
@@ -59,7 +60,7 @@
               @click="ClassTrue(item.id, AllPerson)"
               class="users_list-item"
               :class="{ active: trueId === item.id }"
-              v-for="item in Onchanch"
+              v-for="item in SearchPerson"
               :key="item.id"
             >
               <div class="users_list-img">
@@ -94,11 +95,10 @@ export default {
   },
   mounted() {
     this.dataPersons();
-    console.log(this.AllPerson);
   },
   computed: {
     ...mapGetters(["AllPerson"]),
-    Onchanch() {
+    SearchPerson() {
       return this.AllPerson.filter(
         (item) => !item.login.indexOf(this.serchData)
       );
@@ -154,8 +154,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-  width: 90%;
+  background: #e2e2e2;
+  border-radius: 5px;
+  width: 80%;
   margin: 0 auto;
+  padding: 10px;
 
   &_forms {
     display: flex;
@@ -164,22 +167,34 @@ export default {
 }
 .team,
 .users {
+  padding: 10px;
+  width: 50%;
+  margin: 10px;
+  background: #fff;
+  border-radius: 5px;
   &-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 40px;
+    margin: 5px 0;
+  }
+  &-title {
+    &-heading {
+      font-size: 20px;
+    }
   }
   &_container {
     overflow-y: scroll;
-    background: #0f0;
+    background: #e2e2e2;
     height: 300px;
   }
   &_list {
     margin: 0;
     padding: 0;
     &-img {
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       img {
         width: 100%;
         height: 100%;
@@ -190,20 +205,25 @@ export default {
       display: flex;
       align-items: center;
       transition: 0.5s;
+      border-bottom: 1px solid rgb(155, 155, 155);
       &:hover {
-        background: rgb(38, 148, 38);
+        background: rgb(155, 155, 155);
+      }
+      &:first-child {
+        border-top: 1px solid rgb(155, 155, 155);
       }
     }
     &-name {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: calc(100% - 45px);
       margin-left: 10px;
-      p {
-        text-align: left;
-      }
     }
   }
   &-button {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 5px;
     height: 30px;
     button {
       width: 100%;
@@ -211,17 +231,64 @@ export default {
       line-height: 15px;
     }
   }
-}
-.serch {
-  margin-left: 60%;
-  width: 40%;
-  height: 25px;
-  &-input {
-    height: 100%;
-    width: 100%;
+  &-serch {
+    width: 70%;
+    &-input {
+      width: 100%;
+    }
   }
 }
 .active {
-  background: rgb(72, 77, 52);
+  background: rgb(155, 155, 155);
+}
+@media (min-width: 320px) and (max-width: 479px) {
+  .content {
+    padding: 0;
+    width: 100%;
+    &_forms {
+      flex-wrap: wrap;
+    }
+  }
+  .team,
+  .users {
+    width: calc(100% - 20px);
+    &_list {
+      &-name {
+        a {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  .content {
+    padding: 0;
+    width: 100%;
+    &_forms {
+      flex-wrap: wrap;
+    }
+  }
+  .team,
+  .users {
+    width: calc(100% - 20px);
+    &_list {
+      &-name {
+        a {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
 }
 </style>

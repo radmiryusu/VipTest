@@ -1,6 +1,6 @@
 <template>
-  <div class="content d-flex flex-wrap justify-content-between">
-    <div class="card col-4">
+  <div class="content">
+    <div class="card">
       <div class="card-img-top">
         <img class="card-img-top" :src="this.Profile.avatar_url" alt="" />
       </div>
@@ -13,13 +13,13 @@
         </div>
       </div>
     </div>
-    <div class="content_sub col">
+    <div class="content_sub">
       <div class="content_repos-heading">
         <h2>Фоловеры</h2>
       </div>
       <div class="content_repos-list">
         <table class="table">
-          <tr>
+          <tr class="table_heading">
             <th scope="col">Иконка</th>
             <th scope="col">Имя пользоватея</th>
           </tr>
@@ -32,7 +32,7 @@
         </table>
       </div>
     </div>
-    <div class="content_repos col-12">
+    <div class="content_repos">
       <div class="content_repos-heading">
         <h2>Репозитории пользователя</h2>
       </div>
@@ -104,11 +104,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-  width: 80%;
+  width: 90%;
   background: #e2e2e2;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
   &_post {
     display: inline-flex;
@@ -147,6 +150,7 @@ export default {
     }
   }
   &_repos {
+    width: 100%;
     background: #fff;
     margin: 10px 0;
     padding: 10px;
@@ -180,6 +184,7 @@ export default {
     padding: 10px;
     border-radius: 5px;
     margin-left: 10px;
+    width: calc(70% - 10px);
     &-list {
       overflow-y: scroll;
       height: 100%;
@@ -223,5 +228,58 @@ export default {
 }
 th {
   color: #fff;
+}
+.card {
+  width: 30%;
+}
+@media (min-width: 320px) and (max-width: 479px) {
+  .content {
+    width: 100%;
+    &_sub {
+      margin-top: 10px;
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+  .card {
+    width: 100%;
+    &-img {
+      &-top {
+        padding: 5px;
+      }
+    }
+  }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  .content {
+    width: 100%;
+    &_sub {
+      margin-top: 10px;
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+  .card {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    &-img {
+      &-top {
+        width: 40%;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    &-body {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
 }
 </style>

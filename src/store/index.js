@@ -31,7 +31,7 @@ export default new Vuex.Store({
           let data = [];
           resolve.data.forEach(async (url) => {
             await axios.get(url.languages_url).then((res) => {
-              url.lang = Object.keys(res.data);
+              url.lang = Object.keys(res.data).join(",");
               data.push(url);
             });
           });
