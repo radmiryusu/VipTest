@@ -149,8 +149,6 @@ export default {
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
-    &-heading {
-    }
     &-list {
       background: #e2e2e2;
       padding: 0;
@@ -229,6 +227,7 @@ th {
 }
 .card {
   width: 30%;
+  padding: 10px;
 }
 @media (min-width: 320px) and (max-width: 479px) {
   .content {
