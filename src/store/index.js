@@ -6,9 +6,10 @@ import VueAxios from "vue-axios";
 Vue.use(Vuex);
 
 Vue.use(VueAxios, axios);
+
 export default new Vuex.Store({
   state: {
-    person: "ezmobius",
+    person: "ezmobius", //имя репозитория
     profile: {}, //профиль пользователя
     listReposit: [], //список репозитория
     listSub: [], //список подписок
@@ -41,7 +42,7 @@ export default new Vuex.Store({
           commit("ListReposit", data);
         });
     },
-    //получение списка подписок
+    //получение списка подписок (выдает 0 по api, но в гите есть)
     dataSubscribers({ commit, state }) {
       axios
         .get(`https://api.github.com/users/${state.person}/following_url`)
@@ -56,9 +57,6 @@ export default new Vuex.Store({
         .then((resolve) => {
           commit("AllPersons", resolve.data);
         });
-    },
-    newPersonsList({ commit }, data) {
-      commit("AllPersons", data);
     },
   },
   mutations: {

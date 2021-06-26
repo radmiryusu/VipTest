@@ -14,10 +14,10 @@
       </div>
     </div>
     <div class="content_sub">
-      <div class="content_repos-heading">
+      <div class="content_sub-heading">
         <h2>Фоловеры</h2>
       </div>
-      <div class="content_repos-list">
+      <div class="content_sub-list">
         <table class="table">
           <tr class="table_heading">
             <th scope="col">Иконка</th>
@@ -76,9 +76,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {};
-  },
   mounted() {
     this.dataProfile();
     this.dataReposit();
@@ -95,9 +92,6 @@ export default {
     dateCreate(date) {
       const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
       return date.replace(regex, `$3:$2:$1`);
-    },
-    LangSplit(list) {
-      return list;
     },
   },
 };
@@ -161,7 +155,7 @@ export default {
       background: #e2e2e2;
       padding: 0;
       overflow-y: scroll;
-      height: 350px;
+      height: 450px;
       &-item {
         border-bottom: 1px solid rgb(179, 179, 179);
         transition: 0.5s;
@@ -185,9 +179,13 @@ export default {
     border-radius: 5px;
     margin-left: 10px;
     width: calc(70% - 10px);
+    &-heading {
+      height: 40px;
+    }
     &-list {
+      min-height: 350px;
       overflow-y: scroll;
-      height: 100%;
+      height: calc(100% - 40px);
       padding: 10px 0;
       display: flex;
       flex-wrap: wrap;

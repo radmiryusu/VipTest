@@ -139,15 +139,25 @@ export default {
         }
       });
     },
+    //сортирует при добавлении, поэтому сначала меняется состояние
     SortFriend() {
+      this.sortFriends = !this.sortFriends;
       this.listFriends.sort(function (a, b) {
         if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
         if (a.login.toLowerCase() < b.login.toLowerCase()) return -1;
         return 0;
       });
       if (this.sortFriends) this.listFriends.reverse();
-
-      this.sortFriends = !this.sortFriends;
+    },
+  },
+  watch: {
+    AllPerson() {
+      this.listFriends.sort(function (a, b) {
+        if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
+        if (a.login.toLowerCase() < b.login.toLowerCase()) return -1;
+        return 0;
+      });
+      if (this.sortFriends) this.listFriends.reverse();
     },
   },
 };
