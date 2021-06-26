@@ -105,7 +105,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["dataPersons"]),
+    ...mapActions(["dataPersons", "newPersonsList"]),
     ClassTrue(id, list) {
       for (let item of list) {
         if (id === item.id) {
@@ -120,7 +120,7 @@ export default {
           let allPerson = this.AllPerson;
           allPerson.splice(index, 1);
           this.trueId = "";
-          this.$store.dispatch("newPersonsList", allPerson);
+          this.newPersonsList(allPerson);
         }
       });
     },
@@ -301,7 +301,7 @@ export default {
   }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
-   .content {
+  .content {
     padding: 0;
     width: 100%;
   }
