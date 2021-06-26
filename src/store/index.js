@@ -70,6 +70,10 @@ export default new Vuex.Store({
           console.log(e);
         });
     },
+    //запись нового массива(удаленного иди добавлен)
+    newPersonsList({ commit }, data) {
+      commit("AllPersons", data);
+    },
   },
   mutations: {
     ListProfile(state, data) {
