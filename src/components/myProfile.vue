@@ -34,6 +34,7 @@
             </td>
           </tr>
         </table>
+        <Error v-if="Subscribers.length === 0"></Error>
       </div>
     </div>
     <div class="content_repos">
@@ -51,7 +52,7 @@
           </tr>
           <tr
             class="content_repos-list-item"
-            v-for="item in this.Reposit"
+            v-for="item in Reposit"
             :key="item.id"
           >
             <td>
@@ -73,13 +74,18 @@
             </td>
           </tr>
         </table>
+         <Error v-if="Reposit.length === 0"></Error>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Error from "@/components/DataError.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
+  components: {
+    Error,
+  },
   mounted() {
     this.dataProfile();
     this.dataReposit();
@@ -122,6 +128,7 @@ export default {
       padding: 0;
       overflow-y: scroll;
       height: 450px;
+      position: relative;
       &-item {
         border-bottom: 1px solid $borderItem;
         transition: 0.5s;
@@ -149,6 +156,7 @@ export default {
       height: 40px;
     }
     &-list {
+      position: relative;
       padding: 0;
       background: $backgroundBlock;
       min-height: 350px;

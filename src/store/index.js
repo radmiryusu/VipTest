@@ -22,6 +22,9 @@ export default new Vuex.Store({
         .get(`https://api.github.com/users/${state.person}`)
         .then((resolve) => {
           commit("ListProfile", resolve.data);
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     //получение репозиториев пользователя
@@ -40,6 +43,9 @@ export default new Vuex.Store({
         })
         .then((data) => {
           commit("ListReposit", data);
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     //получение списка подписок (выдает 0 по api, но в гите есть)
@@ -48,6 +54,9 @@ export default new Vuex.Store({
         .get(`https://api.github.com/users/${state.person}/following_url`)
         .then((resolve) => {
           commit("ListSubscribers", resolve.data);
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     //получение списка теор. команды
@@ -56,6 +65,9 @@ export default new Vuex.Store({
         .get("https://api.github.com/users?since=50000000")
         .then((resolve) => {
           commit("AllPersons", resolve.data);
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
   },
