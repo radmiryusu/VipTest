@@ -1,59 +1,75 @@
 <template>
-  <div class="content">
-    <div class="content_post">
-      <div class="content_post_icon">
-        <img :src="this.Profile.avatar_url" alt="" />
+  <div class="content d-flex flex-wrap justify-content-between">
+    <div class="card col-4">
+      <div class="card-img-top">
+        <img class="card-img-top" :src="this.Profile.avatar_url" alt="" />
       </div>
-      <div class="content_post_info">
+      <div class="card-body">
         <div class="content_post_info-link">
-          <a :href="linkGitHub">{{ this.Profile.login }}</a>
+          <a class="card-title" :href="linkGitHub">{{ this.Profile.login }}</a>
         </div>
         <div class="content_post_info-date">
-          <p>{{ dateCreate(this.Profile.created_at) }}</p>
+          <p class="card-text">{{ dateCreate(this.Profile.created_at) }}</p>
         </div>
       </div>
     </div>
-    <div class="content_repos">
+    <div class="content_sub col">
+      <div class="content_repos-heading">
+        <h2>Фоловеры</h2>
+      </div>
+      <div class="content_repos-list">
+        <table class="table">
+          <tr>
+            <th scope="col">Иконка</th>
+            <th scope="col">Имя пользоватея</th>
+          </tr>
+          <tr v-for="item in Subscribers" :key="item.id">
+            <td><img :src="item.avatar_url" alt="" /></td>
+            <td>
+              <a :href="item.html_url"> {{ item.name }} </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="content_repos col-12">
       <div class="content_repos-heading">
         <h2>Репозитории пользователя</h2>
       </div>
-      <ul class="content_repos-list">
-        <li
-          class="content_repos-list-item"
-          v-for="item in this.Reposit"
-          :key="item.id"
-        >
-          <div class="content_repos-name">
-            <a :href="item.html_url">
-              {{ item.name }}
-            </a>
-          </div>
-          <div class="content_repos-descript">
-            <p>{{ item.description }}</p>
-          </div>
-          <div class="content_repos-lang">
-            <p>{{ LangSplit(item.lang) }}</p>
-          </div>
-          <div class="content_repos-link">
-            <p>{{ item.clone_url }}</p>
-          </div>
-          <div class="content_repos-date">
-            <p>{{ dateCreate(item.created_at) }}</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="content_sub">
-      <ul class="content_sub-list">
-        <li class="content_sub-item" v-for="item in Subscribers" :key="item.id">
-          <div class="content_sub-img">
-            <img :src="item.avatar_url" alt="" />
-          </div>
-          <div class="content_sub-link">
-            <a :href="item.html_url"> {{ item.name }} </a>
-          </div>
-        </li>
-      </ul>
+      <div class="content_repos-list">
+        <table class="table table-striped">
+          <tr class="table_heading">
+            <th scope="col">Название</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Язык</th>
+            <th scope="col">Ссылка на копию</th>
+            <th scope="col">Дата создания</th>
+          </tr>
+          <tr
+            class="content_repos-list-item"
+            v-for="item in this.Reposit"
+            :key="item.id"
+          >
+            <td>
+              <a :href="item.html_url">
+                {{ item.name }}
+              </a>
+            </td>
+            <td>
+              <p :title="item.description">{{ item.description }}</p>
+            </td>
+            <td>
+              <p :title="LangSplit(item.lang)">{{ LangSplit(item.lang) }}</p>
+            </td>
+            <td>
+              <p :title="item.clone_url">{{ item.clone_url }}</p>
+            </td>
+            <td>
+              <p>{{ dateCreate(item.created_at) }}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +105,9 @@ export default {
 <style lang="scss" scoped>
 .content {
   width: 80%;
+  background: #e2e2e2;
+  padding: 20px;
+  border-radius: 5px;
   margin: 20px auto;
 
   &_post {
@@ -128,19 +147,18 @@ export default {
     }
   }
   &_repos {
+    background: #fff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
     &-heading {
     }
     &-list {
+      background: #e2e2e2;
       padding: 0;
-      background: rgb(80, 164, 167);
       overflow-y: scroll;
       height: 350px;
       &-item {
-        padding: 3px 10px;
-        display: flex;
-        height: 50px;
-        justify-content: space-between;
-        align-content: center;
         border-bottom: 1px solid rgb(179, 179, 179);
         transition: 0.5s;
 
@@ -148,27 +166,6 @@ export default {
           background: rgb(175, 175, 175);
         }
       }
-    }
-    &-name,
-    &-descript,
-    &-lang,
-    &-date,
-    &-link {
-      * {
-        white-space: nowrap; /* Запрещаем перенос строк */
-        overflow: hidden; /* Обрезаем все, что не помещается в область */
-        text-overflow: ellipsis; /* Добавляем многоточие */
-      }
-    }
-    &-name,
-    &-descript,
-    &-lang,
-    &-date,
-    &-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 25%;
     }
     &-description,
     &-lang {
@@ -179,8 +176,10 @@ export default {
     }
   }
   &_sub {
-    background: rgb(80, 164, 167);
-    height: 350px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 10px;
     &-list {
       overflow-y: scroll;
       height: 100%;
@@ -216,5 +215,13 @@ export default {
       }
     }
   }
+}
+.table {
+  &_heading {
+    background: #909090;
+  }
+}
+th {
+  color: #fff;
 }
 </style>

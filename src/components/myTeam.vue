@@ -1,6 +1,6 @@
 <template>
-  <div class="content">
-    <div class="serch">
+  <div class="content row">
+    <div class="serch col-4">
       <input
         class="serch-input"
         type="text"
@@ -10,8 +10,8 @@
         v-model="serchData"
       />
     </div>
-    <div class="content_forms">
-      <div class="team">
+    <div class="content_forms row">
+      <div class="team col-6">
         <div class="team-heading">
           <div class="team-title">
             <h2>список команды</h2>
@@ -45,14 +45,12 @@
           >
         </div>
       </div>
-      <div class="users">
+      <div class="users col-6">
         <div class="users-heading">
           <div class="users-title">
             <h2>список команды</h2>
           </div>
-          <div class="users-sort">
-            <b-button @click="SortList()" variant="secondary">sort</b-button>
-          </div>
+        
         </div>
         <div class="users_container">
           <ul class="users_list">
@@ -90,7 +88,6 @@ export default {
     return {
       trueId: "",
       listFriends: [],
-      sortPerson: false,
       sortFriends: false,
       serchData: "",
     };
@@ -142,15 +139,6 @@ export default {
         }
       });
     },
-    SortList() {
-      this.AllPerson.sort(function (a, b) {
-        if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
-        if (a.login.toLowerCase() < b.login.toLowerCase()) return -1;
-        return 0;
-      });
-      if (this.sortPerson) this.AllPerson.reverse();
-      this.sortPerson = !this.sortPerson;
-    },
     SortFriend() {
       this.listFriends.sort(function (a, b) {
         if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
@@ -176,7 +164,6 @@ export default {
 }
 .team,
 .users {
-  width: 40%;
   &-heading {
     display: flex;
     justify-content: space-between;
@@ -221,6 +208,7 @@ export default {
     button {
       width: 100%;
       height: 100%;
+      line-height: 15px;
     }
   }
 }
