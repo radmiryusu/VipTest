@@ -22,7 +22,7 @@
         <h2>Фоловеры</h2>
       </div>
       <div class="content_sub-list">
-        <table class="table">
+        <table class="table table_sub">
           <thead class="table_heading-sub">
             <tr class="table_heading">
               <th scope="col">Иконка</th>
@@ -136,6 +136,7 @@ export default {
     border-radius: 5px;
     &-list {
       overflow-x: scroll;
+      overflow-y: hidden;
       width: 100%;
       background: $backgroundBlock;
       padding: 0;
@@ -168,6 +169,7 @@ export default {
     }
     &-list {
       overflow-x: scroll;
+      overflow-y: hidden;
       padding: 0;
       background: $backgroundBlock;
 
@@ -208,6 +210,9 @@ export default {
   position: relative;
   width: 100%;
   min-width: 500px;
+  &_sub{
+    height: 100%;
+  }
   &_heading {
     background: $backgroundTable;
 
