@@ -23,18 +23,22 @@
       </div>
       <div class="content_sub-list">
         <table class="table">
-          <tr class="table_heading">
-            <th scope="col">Иконка</th>
-            <th scope="col">Имя пользоватея</th>
-          </tr>
-          <tr v-for="item in Subscribers" :key="item.id">
-            <td><img :src="item.avatar_url" alt="" /></td>
-            <td>
-              <a :href="item.html_url"> {{ item.name }} </a>
-            </td>
-          </tr>
+          <thead class="table_heading-sub">
+            <tr class="table_heading">
+              <th scope="col">Иконка</th>
+              <th scope="col">Имя пользоватея</th>
+            </tr>
+          </thead>
+          <tbody class="table_body-sub">
+            <tr v-for="item in Subscribers" :key="item.id">
+              <td><img :src="item.avatar_url" alt="" /></td>
+              <td>
+                <a :href="item.html_url"> {{ item.name }} </a>
+              </td>
+            </tr>
+          </tbody>
+          <Error v-if="Subscribers.length === 0"></Error>
         </table>
-        <Error v-if="Subscribers.length === 0"></Error>
       </div>
     </div>
     <div class="content_repos">
@@ -43,38 +47,44 @@
       </div>
       <div class="content_repos-list">
         <table class="table table-striped">
-          <tr class="table_heading">
-            <th scope="col">Название</th>
-            <th scope="col">Описание</th>
-            <th scope="col">Язык</th>
-            <th scope="col">Ссылка на копию</th>
-            <th scope="col">Дата создания</th>
-          </tr>
-          <tr
-            class="content_repos-list-item"
-            v-for="item in Reposit"
-            :key="item.id"
-          >
-            <td>
-              <a :href="item.html_url">
-                {{ item.name }}
-              </a>
-            </td>
-            <td>
-              <p :title="item.description">{{ item.description }}</p>
-            </td>
-            <td>
-              <p :title="item.lang">{{ item.lang }}</p>
-            </td>
-            <td>
-              <p :title="item.clone_url">{{ item.clone_url }}</p>
-            </td>
-            <td>
-              <p>{{ dateCreate(item.created_at) }}</p>
-            </td>
-          </tr>
+          <thead class="table_heading-rep">
+            <tr class="table_heading">
+              <th scope="col">Название</th>
+              <th scope="col">Описание</th>
+              <th scope="col">Язык</th>
+              <th scope="col">Ссылка на копию</th>
+              <th scope="col">Дата создания</th>
+            </tr>
+          </thead>
+          <tbody class="table_body-rep">
+            <tr
+              class="content_repos-list-item"
+              v-for="item in Reposit"
+              :key="item.id"
+            >
+              <td>
+                <a :href="item.html_url">
+                  {{ item.name }}
+                </a>
+              </td>
+              <td>
+                <p :title="item.description">{{ item.description }}</p>
+              </td>
+              <td>
+                <p :title="item.lang">{{ item.lang }}</p>
+              </td>
+              <td>
+                <p class="table_body-url" :title="item.clone_url">
+                  {{ item.clone_url }}
+                </p>
+              </td>
+              <td>
+                <p>{{ dateCreate(item.created_at) }}</p>
+              </td>
+            </tr>
+          </tbody>
+          <Error v-if="Reposit.length === 0"></Error>
         </table>
-         <Error v-if="Reposit.length === 0"></Error>
       </div>
     </div>
   </div>
@@ -83,6 +93,11 @@
 import Error from "@/components/DataError.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      windowWidth: 0,
+    };
+  },
   components: {
     Error,
   },
@@ -90,6 +105,13 @@ export default {
     this.dataProfile();
     this.dataReposit();
     this.dataSubscribers();
+  },
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   computed: {
     ...mapGetters(["Profile", "Reposit", "Subscribers"]),
@@ -102,6 +124,10 @@ export default {
     dateCreate(date) {
       const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
       return date.replace(regex, `$3:$2:$1`);
+    },
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+      console.log(window.innerWidth);
     },
   },
 };
@@ -124,11 +150,11 @@ export default {
     padding: 10px;
     border-radius: 5px;
     &-list {
+      overflow-x: scroll;
+      width: 100%;
       background: $backgroundBlock;
       padding: 0;
-      overflow-y: scroll;
       height: 450px;
-      position: relative;
       &-item {
         border-bottom: 1px solid $borderItem;
         transition: 0.5s;
@@ -156,11 +182,10 @@ export default {
       height: 40px;
     }
     &-list {
-      position: relative;
+      overflow-x: scroll;
       padding: 0;
       background: $backgroundBlock;
-      min-height: 350px;
-      overflow-y: scroll;
+
       height: calc(100% - 40px);
       display: flex;
       flex-wrap: wrap;
@@ -195,8 +220,53 @@ export default {
   }
 }
 .table {
+  position: relative;
+  width: 100%;
+  min-width: 500px;
   &_heading {
     background: $backgroundTable;
+
+    &-rep,
+    &-sub {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+  }
+  &_body {
+    &-sub {
+      width: 100%;
+      display: block;
+      min-height: 350px;
+      max-height: 500px;
+      overflow-y: scroll;
+      tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        p {
+          white-space: nowrap; /* Отменяем перенос текста */
+          overflow: hidden; /* Обрезаем содержимое */
+          text-overflow: ellipsis; /* Многоточие */
+        }
+      }
+    }
+    &-rep {
+      display: block;
+      height: 400px;
+      overflow-y: scroll;
+      width: 100%;
+      tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+    }
+    &-url {
+      overflow: hidden; /* Обрезаем содержимое */
+      text-overflow: ellipsis; /* Многоточие */
+      white-space: nowrap; /* Отменяем перенос текста */
+    }
   }
 }
 th {
