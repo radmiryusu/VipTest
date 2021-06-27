@@ -93,11 +93,6 @@
 import Error from "@/components/DataError.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      windowWidth: 0,
-    };
-  },
   components: {
     Error,
   },
@@ -106,13 +101,7 @@ export default {
     this.dataReposit();
     this.dataSubscribers();
   },
-  created() {
-    window.addEventListener("resize", this.handleResize);
-    this.handleResize();
-  },
-  destroyed() {
-    window.removeEventListener("resize", this.handleResize);
-  },
+
   computed: {
     ...mapGetters(["Profile", "Reposit", "Subscribers"]),
     linkGitHub() {
@@ -124,10 +113,6 @@ export default {
     dateCreate(date) {
       const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
       return date.replace(regex, `$3:$2:$1`);
-    },
-    handleResize() {
-      this.windowWidth = window.innerWidth;
-      console.log(window.innerWidth);
     },
   },
 };
