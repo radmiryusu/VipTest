@@ -96,7 +96,7 @@ export default {
   components: {
     Error,
   },
-  mounted() {
+  created() {
     this.dataProfile();
     this.dataReposit();
     this.dataSubscribers();

@@ -93,7 +93,7 @@ export default {
       serchData: "",
     };
   },
-  mounted() {
+  created() {
     this.dataPersons();
   },
   computed: {
