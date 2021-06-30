@@ -19,7 +19,7 @@ export default new Vuex.Store({
     //получение профился пользователя
     dataProfile({ commit, state }) {
       axios
-        .get(`https://api.github.com/users/${state.person}`,{
+        .get(`https://api.github.com/users/${state.person}`, {
           Authorization: "token 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",
         })
         .then((resolve) => {
@@ -57,7 +57,7 @@ export default new Vuex.Store({
     //получение списка подписок (выдает 0 по api, но в гите есть)
     dataSubscribers({ commit, state }) {
       axios
-        .get(`https://api.github.com/users/${state.person}/following_url`,{
+        .get(`https://api.github.com/users/${state.person}/following`, {
           Authorization: "token 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",
         })
         .then((resolve) => {
