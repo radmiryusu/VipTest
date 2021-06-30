@@ -133,7 +133,7 @@ export default {
             data.push(item);
           });
           data.push(item);
-           this.newPersonsList(data);
+          this.newPersonsList(data);
           this.trueId = "";
         }
       });
@@ -164,7 +164,6 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/color.scss";
 .content {
-  background: $backgroundBlock;
   border-radius: 5px;
   width: 80%;
   margin: 0 auto;
@@ -180,7 +179,10 @@ export default {
   padding: 10px;
   width: 50%;
   margin: 10px;
-  background: $backgroundWhite;
+  border: 1px solid rgb(179, 179, 179);
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(185, 185, 185, 0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(185, 185, 185, 0.75);
+  box-shadow: 2px 2px 5px 0px rgba(185, 185, 185, 0.75);
   border-radius: 5px;
   &-heading {
     display: flex;
@@ -195,11 +197,12 @@ export default {
     }
   }
   &_container {
-    overflow-y: scroll;
-    background: $backgroundBlock;
-    height: 300px;
+    background: #fff;
   }
   &_list {
+    overflow-y: scroll;
+    border: 1px solid #f1f1f1;
+    height: 300px;
     margin: 0;
     padding: 0;
     &-img {
@@ -215,12 +218,12 @@ export default {
       display: flex;
       align-items: center;
       transition: 0.5s;
-      border-bottom: 1px solid $borderItem;
+      border-bottom: 1px solid #f1f1f1;
       &:hover {
-        background: $backgroundItemHover;
+        background: rgb(216, 216, 216);
       }
       &:first-child {
-        border-top: 1px solid $borderItem;
+        
       }
     }
     &-name {
@@ -249,7 +252,7 @@ export default {
   }
 }
 .active {
-  background: $backgroundItemHover;
+  background: rgb(216, 216, 216);
 }
 @media (min-width: 320px) and (max-width: 479px) {
   .content {

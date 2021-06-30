@@ -12,6 +12,7 @@
         </div>
         <div class="card-footer">
           <p class="card-footer-text">
+            <span>Дата создания:</span>
             {{ dateCreate(this.Profile.created_at) }}
           </p>
         </div>
@@ -22,23 +23,14 @@
         <h2>Фоловеры</h2>
       </div>
       <div class="content_sub-list">
-        <table class="table table_sub">
-          <thead class="table_heading-sub">
-            <tr class="table_heading">
-              <th scope="col">Иконка</th>
-              <th scope="col">Имя пользоватея</th>
-            </tr>
-          </thead>
-          <tbody class="table_body-sub">
-            <tr v-for="item in Subscribers" :key="item.id">
-              <td><img :src="item.avatar_url" alt="" /></td>
-              <td>
-                <a :href="item.html_url"> {{ item.name }} </a>
-              </td>
-            </tr>
-          </tbody>
-          <Error v-if="Subscribers.length === 0"></Error>
-        </table>
+        <ul class="list-group">
+          <SublList
+            v-for="item in Subscribers"
+            :key="item.id"
+            :person="item"
+          ></SublList>
+        </ul>
+        <Error v-if="Subscribers.length === 0"></Error>
       </div>
     </div>
     <div class="content_repos">
@@ -46,55 +38,29 @@
         <h2>Репозитории пользователя</h2>
       </div>
       <div class="content_repos-list">
-        <table class="table table-striped">
-          <thead class="table_heading-rep">
-            <tr class="table_heading">
-              <th scope="col">Название</th>
-              <th scope="col">Описание</th>
-              <th scope="col">Язык</th>
-              <th scope="col">Ссылка на копию</th>
-              <th scope="col">Дата создания</th>
-            </tr>
-          </thead>
-          <tbody class="table_body-rep">
-            <tr
-              class="content_repos-list-item"
-              v-for="item in Reposit"
-              :key="item.id"
-            >
-              <td>
-                <a :href="item.html_url">
-                  {{ item.name }}
-                </a>
-              </td>
-              <td>
-                <p :title="item.description">{{ item.description }}</p>
-              </td>
-              <td>
-                <p :title="item.language">{{ item.language }}</p>
-              </td>
-              <td>
-                <p class="table_body-url" :title="item.clone_url">
-                  {{ item.clone_url }}
-                </p>
-              </td>
-              <td>
-                <p>{{ dateCreate(item.created_at) }}</p>
-              </td>
-            </tr>
-          </tbody>
-          <Error v-if="Reposit.length === 0"></Error>
-        </table>
+        <ul class="list-group">
+          <RepList
+            v-for="item in Reposit"
+            :key="item.id"
+            :RepList="item"
+          ></RepList>
+        </ul>
+
+        <Error v-if="Reposit.length === 0"></Error>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Error from "@/components/DataError.vue";
+import SublList from "@/components/list/subscribers.vue";
+import RepList from "@/components/list/repositor.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     Error,
+    SublList,
+    RepList,
   },
   created() {
     this.dataProfile();
@@ -119,8 +85,7 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/color.scss";
 .content {
-  width: 80%;
-  background: $backgroundBlock;
+  width: 60%;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
@@ -129,7 +94,7 @@ export default {
   flex-wrap: wrap;
   &_repos {
     width: 100%;
-    background: $backgroundWhite;
+    border: 1px solid rgb(179, 179, 179);
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
@@ -137,7 +102,7 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       width: 100%;
-      background: $backgroundBlock;
+      background: rgb(179, 179, 179);
       padding: 0;
       height: 450px;
       &-item {
@@ -158,7 +123,7 @@ export default {
     }
   }
   &_sub {
-    background: $backgroundWhite;
+    border: 1px solid rgb(179, 179, 179);
     padding: 10px;
     border-radius: 5px;
     margin-left: 10px;
@@ -167,8 +132,7 @@ export default {
       height: 40px;
     }
     &-list {
-      overflow-x: scroll;
-      overflow-y: hidden;
+      position: relative;
       padding: 0;
       background: $backgroundBlock;
 
@@ -258,12 +222,11 @@ export default {
     }
   }
 }
-th {
-  color: $colorWhite;
-}
+
 .card {
   width: 30%;
   padding: 10px;
+  border: 1px solid rgb(179, 179, 179);
   &-image {
     width: 100%;
     border-radius: 5px;
@@ -281,12 +244,17 @@ th {
     }
   }
   &-footer {
-    background: $backgroundWhite;
+    background: #fff;
     border: none;
     &-text {
       font-weight: 800;
     }
   }
+}
+.list-group {
+  width: 100%;
+  max-height: 500px;
+  overflow-y: auto;
 }
 @media (min-width: 320px) and (max-width: 479px) {
   .content {
