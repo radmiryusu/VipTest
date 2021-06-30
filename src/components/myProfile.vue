@@ -71,7 +71,7 @@
                 <p :title="item.description">{{ item.description }}</p>
               </td>
               <td>
-                <p :title="item.lang">{{ item.lang }}</p>
+                <p :title="item.language">{{ item.language }}</p>
               </td>
               <td>
                 <p class="table_body-url" :title="item.clone_url">
@@ -98,8 +98,6 @@ export default {
   },
   created() {
     this.dataProfile();
-    this.dataReposit();
-    this.dataSubscribers();
   },
 
   computed: {
@@ -111,8 +109,9 @@ export default {
   methods: {
     ...mapActions(["dataProfile", "dataReposit", "dataSubscribers"]),
     dateCreate(date) {
-      const regex = /(\d{4})-(\d{2})-(\d{2})(T\d{2}:\d{2}:\d{2}Z)/gm;
-      return date.replace(regex, `$3:$2:$1`);
+      const intl = Intl.DateTimeFormat("ru");
+      const newDate = new Date(date);
+      return intl.format(newDate);
     },
   },
 };
@@ -120,7 +119,7 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/color.scss";
 .content {
-  width: 90%;
+  width: 80%;
   background: $backgroundBlock;
   padding: 20px;
   border-radius: 5px;
@@ -210,7 +209,7 @@ export default {
   position: relative;
   width: 100%;
   min-width: 500px;
-  &_sub{
+  &_sub {
     height: 100%;
   }
   &_heading {
