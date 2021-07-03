@@ -27,6 +27,7 @@
 </template>
 <script>
 export default {
+  
   props: {
     RepList: Object,
   },
@@ -68,8 +69,6 @@ export default {
   &-info {
     &-top {
       display: flex;
-      p {
-      }
     }
   }
   &-name {

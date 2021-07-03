@@ -14,21 +14,14 @@
         </div>
         <div class="team_container">
           <ul class="team_list">
-            <li
-              @click="ClassTrue(item.id, listFriends)"
+            <ListFriend
+              @click.native="ClassTrue(item.id, listFriends)"
               :class="{ active: trueId === item.id }"
               class="team_list-item"
               v-for="item in listFriends"
               :key="item.id"
-            >
-              <div class="team_list-img">
-                <img :src="item.avatar_url" alt="" />
-              </div>
-              <div class="team_list-name">
-                <p>{{ item.login }}</p>
-                <a :href="item.html_url"> {{ item.html_url }} </a>
-              </div>
-            </li>
+              :person="item"
+            ></ListFriend>
           </ul>
         </div>
         <div class="team-button">
@@ -55,22 +48,15 @@
         </div>
         <div class="users_container">
           <ul class="users_list">
-            <li
+            <ListTeam
               :id="item.id"
-              @click="ClassTrue(item.id, AllPerson)"
+              @click.native="ClassTrue(item.id, AllPerson)"
               class="users_list-item"
               :class="{ active: trueId === item.id }"
               v-for="item in SearchPerson"
               :key="item.id"
-            >
-              <div class="users_list-img">
-                <img :src="item.avatar_url" alt="" />
-              </div>
-              <div class="users_list-name">
-                <p>{{ item.login }}</p>
-                <a :href="item.html_url"> {{ item.html_url }} </a>
-              </div>
-            </li>
+              :person="item"
+            ></ListTeam>
           </ul>
         </div>
         <div class="users-button">
@@ -84,6 +70,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import ListTeam from "@/components/list/listTeam.vue";
+import ListFriend from "@/components/list/listFriend.vue";
 export default {
   data() {
     return {
@@ -92,6 +80,10 @@ export default {
       sortFriends: false,
       serchData: "",
     };
+  },
+  components: {
+    ListTeam,
+    ListFriend,
   },
   created() {
     this.dataPersons();
@@ -120,7 +112,7 @@ export default {
           let allPerson = this.AllPerson;
           allPerson.splice(index, 1);
           this.trueId = "";
-          this.newPersonsList(allPerson);
+          this.dataPersons(allPerson);
         }
       });
     },
@@ -221,9 +213,6 @@ export default {
       border-bottom: 1px solid #f1f1f1;
       &:hover {
         background: rgb(216, 216, 216);
-      }
-      &:first-child {
-        
       }
     }
     &-name {

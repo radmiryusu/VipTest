@@ -2,11 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import VueAxios from "vue-axios";
-
+import FetchMethods from "../modul/data.js";
 Vue.use(Vuex);
 
 Vue.use(VueAxios, axios);
-
 export default new Vuex.Store({
   state: {
     person: "ezmobius", //имя репозитория
@@ -18,71 +17,39 @@ export default new Vuex.Store({
   actions: {
     //получение профился пользователя
     dataProfile({ commit, state }) {
-      axios
-        .get(`https://api.github.com/users/${state.person}`, {
-          Authorization: "token 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",
+      const url = `https://api.github.com/users/${state.person}`;
+      FetchMethods(url)
+        .then((res) => {
+          console.log(res);
+          commit("ListProfile", res);
+          return res;
         })
-        .then((resolve) => {
-          this.dispatch("dataReposit");
-          this.dispatch("dataSubscribers");
-          commit("ListProfile", resolve.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-    //получение репозиториев пользователя
-    dataReposit({ commit, state }) {
-      axios
-        .get(`https://api.github.com/users/${state.person}/repos`, {
-          Authorization: "token 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",
-        })
-        .then((resolve) => {
-          let data = [];
-          resolve.data.forEach(async (url) => {
-            await axios.get(url.languages_url).then((res) => {
-              url["language"] = Object.keys(res.data).join(",");
-              data.push(url);
-            });
+        .then(({ repos_url, following_url }) => {
+          Promise.allSettled([
+            FetchMethods(repos_url),
+            FetchMethods(following_url.split(/{\/[a-z]*\D[a-z]*}/)[0]),
+          ]).then((res) => {
+            commit("ListReposit", res[0].value);
+            commit("ListSubscribers", res[1].value);
           });
-          return data;
-        })
-        .then((data) => {
-          commit("ListReposit", data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-    //получение списка подписок (выдает 0 по api, но в гите есть)
-    dataSubscribers({ commit, state }) {
-      axios
-        .get(`https://api.github.com/users/${state.person}/following`, {
-          Authorization: "token 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",
-        })
-        .then((resolve) => {
-          commit("ListSubscribers", resolve.data);
-        })
-        .catch((e) => {
-          console.log(e);
         });
     },
     //получение списка теор. команды
-    dataPersons({ commit }) {
-      axios
-        .get("https://api.github.com/users?since=50000000", {
-          Authorization: "token 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",
-        })
-        .then((resolve) => {
-          commit("AllPersons", resolve.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-    //запись нового массива(удаленного иди добавлен)
-    newPersonsList({ commit }, data) {
-      commit("AllPersons", data);
+    dataPersons({ commit }, data = []) {
+      if (data.length !== 0) {
+        commit("AllPersons", data);
+      } else {
+        axios
+          .get("https://api.github.com/users?since=50000000", {
+            Authorization: "token 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",
+          })
+          .then((resolve) => {
+            commit("AllPersons", resolve.data);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     },
   },
   mutations: {

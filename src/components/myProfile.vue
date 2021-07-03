@@ -1,23 +1,11 @@
 <template>
   <div class="content">
-    <div class="card">
-      <div class="card-img-top">
-        <img class="card-image" :src="this.Profile.avatar_url" alt="" />
-      </div>
-      <div class="card-body">
-        <div class="card-title">
-          <a class="card-title-link" :href="linkGitHub">{{
-            this.Profile.login
-          }}</a>
-        </div>
-        <div class="card-footer">
-          <p class="card-footer-text">
-            <span>Дата создания:</span>
-            {{ dateCreate(this.Profile.created_at) }}
-          </p>
-        </div>
-      </div>
-    </div>
+    <ProfileCard
+      :avatar="this.Profile.avatar_url"
+      :url="this.Profile.html_url"
+      :login="this.Profile.login"
+      :date="this.Profile.created_at"
+    ></ProfileCard>
     <div class="content_sub">
       <div class="content_sub-heading">
         <h2>Фоловеры</h2>
@@ -55,12 +43,14 @@
 import Error from "@/components/DataError.vue";
 import SublList from "@/components/list/subscribers.vue";
 import RepList from "@/components/list/repositor.vue";
+import ProfileCard from "@/components/list/ProfileCard.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     Error,
     SublList,
     RepList,
+    ProfileCard,
   },
   created() {
     this.dataProfile();
@@ -68,17 +58,10 @@ export default {
 
   computed: {
     ...mapGetters(["Profile", "Reposit", "Subscribers"]),
-    linkGitHub() {
-      return `https://github.com/${this.Profile.login}`;
-    },
   },
   methods: {
-    ...mapActions(["dataProfile", "dataReposit", "dataSubscribers"]),
-    dateCreate(date) {
-      const intl = Intl.DateTimeFormat("ru");
-      const newDate = new Date(date);
-      return intl.format(newDate);
-    },
+    ...mapActions(["dataProfile"]),
+    
   },
 };
 </script>
@@ -99,6 +82,7 @@ export default {
     padding: 10px;
     border-radius: 5px;
     &-list {
+      position: relative;
       overflow-x: scroll;
       overflow-y: hidden;
       width: 100%;
@@ -223,34 +207,6 @@ export default {
   }
 }
 
-.card {
-  width: 30%;
-  padding: 10px;
-  border: 1px solid rgb(179, 179, 179);
-  &-image {
-    width: 100%;
-    border-radius: 5px;
-  }
-  &-title {
-    margin: 10px 0;
-    &-link {
-      font-size: 1.6rem;
-      color: $colorLink;
-      transition: 0.5s;
-      text-decoration: none;
-      &:hover {
-        color: $colorCardHover;
-      }
-    }
-  }
-  &-footer {
-    background: #fff;
-    border: none;
-    &-text {
-      font-weight: 800;
-    }
-  }
-}
 .list-group {
   width: 100%;
   max-height: 500px;
