@@ -2,13 +2,12 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import FetchMethods from "../modul/data.js";
 Vue.use(Vuex);
 
 Vue.use(VueAxios, axios);
 export default new Vuex.Store({
   state: {
-    person: "ezmobius", //имя репозитория
+    person: "radmiryusu", //имя репозитория
     profile: {}, //профиль пользователя
     listReposit: [], //список репозитория
     listSub: [], //список подписок
@@ -17,19 +16,21 @@ export default new Vuex.Store({
   actions: {
     //получение профился пользователя
     dataProfile({ commit, state }) {
-      FetchMethods(`https://api.github.com/users/${state.person}`)
+      axios.get(`https://api.github.com/users/${state.person}`)
         .then((res) => {
-          commit("ListProfile", res);
-          return res;
+          commit("ListProfile", res.data);
+          return res.data;
         })
         .then(({ repos_url, following_url }) => {
           const link = Promise.allSettled([
-            FetchMethods(repos_url),
-            FetchMethods(following_url.split(/{\/[a-z]*\D[a-z]*}/)[0]),
+            axios.get(repos_url),
+            axios.get(following_url.split(/{\/[a-z]*\D[a-z]*}/)[0]),
           ]);
-          link.then(([repost,subscr]) => {
-            commit("ListReposit", repost.value);
-            commit("ListSubscribers", subscr.value);
+
+          link.then((data) => {
+            const [repost, subscribe] = data
+            commit("ListReposit", repost.value.data);
+            commit("ListSubscribers", subscribe.value.data);
           });
         });
     },
@@ -38,7 +39,7 @@ export default new Vuex.Store({
       if (data.length !== 0) {
         commit("AllPersons", data);
       } else {
-        FetchMethods("https://api.github.com/users?since=50000000")
+        axios.get("https://api.github.com/users?since=50000000")
           .then((resolve) => {
             commit("AllPersons", resolve);
           })

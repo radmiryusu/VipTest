@@ -1,23 +1,17 @@
 <template>
   <div class="content">
-    <ProfileCard
+    <personCard
       :avatar="this.Profile.avatar_url"
       :url="this.Profile.html_url"
       :login="this.Profile.login"
       :date="this.Profile.created_at"
-    ></ProfileCard>
+    />
     <div class="content_sub">
       <div class="content_sub-heading">
         <h2>Фоловеры</h2>
       </div>
       <div class="content_sub-list">
-        <ul class="list-group">
-          <SublList
-            v-for="item in Subscribers"
-            :key="item.id"
-            :person="item"
-          ></SublList>
-        </ul>
+        <SublList :data="Subscribers" />
         <Error v-if="Subscribers.length === 0"></Error>
       </div>
     </div>
@@ -43,14 +37,14 @@
 import Error from "@/components/DataError.vue";
 import SublList from "@/components/list/subscribers.vue";
 import RepList from "@/components/list/repositor.vue";
-import ProfileCard from "@/components/list/ProfileCard.vue";
+import personCard from "../components/profile/personCard.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     Error,
     SublList,
     RepList,
-    ProfileCard,
+    personCard,
   },
   created() {
     this.dataProfile();

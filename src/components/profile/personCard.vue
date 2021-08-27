@@ -1,18 +1,10 @@
 <template>
-  <div class="card">
-    <div class="card-img-top">
-      <img class="card-image" :src="Avatar" alt="" />
-    </div>
+  <div class="card" style="width: 18rem">
+    <img :src="avatarUrl" class="card-img-top" alt="img error" />
     <div class="card-body">
-      <div class="card-title">
-        <a class="card-title-link" :href="Url">{{ Login }}</a>
-      </div>
-      <div class="card-footer">
-        <p class="card-footer-text">
-          <span>Дата создания:</span>
-          {{ dateCreate(this.date) }}
-        </p>
-      </div>
+      <h5 class="card-title">Дата создания:</h5>
+      <p class="card-text">{{ dateCreate(date) }}</p>
+      <a :href="urlAccount" class="btn btn-primary">{{ userName }}</a>
     </div>
   </div>
 </template>
@@ -25,24 +17,17 @@ export default {
     date: String,
   },
   computed: {
-    Avatar() {
+    avatarUrl() {
       return this.avatar;
     },
-    Url() {
+    urlAccount() {
       return this.url;
     },
-    Login() {
+    userName() {
       return this.login;
     },
-  },
-  methods: {
-    dateCreate(date) {
-      if (date) {
-        const intl = Intl.DateTimeFormat("ru");
-        const newDate = new Date(date);
-        return intl.format(newDate);
-      }
-      return "";
+    dateCreate() {
+      return this.date ? Intl.DateTimeFormat("ru").format(new Date(this.date)) : "";
     },
   },
 };

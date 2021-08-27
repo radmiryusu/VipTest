@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Profile from "../components/myProfile.vue";
-import Team from "../components/myTeam.vue";
+import Profile from "../view/Profile.vue";
+import Team from "../view/Team.vue";
 
 Vue.use(VueRouter);
 
