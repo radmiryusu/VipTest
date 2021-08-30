@@ -1,20 +1,29 @@
 <template>
-  <ul class="list-group">
-    <li v-for="(item,index) in data" :key="index" class="list-group-item">
-      <div class="item-top">
-        <img class="item-top-img" :src="item.avatar" alt="" />
-      </div>
-      <div class="item-bottom">
-        <p class="item-bottom-name">{{ item.login }}</p>
-        <a class="item-bottom-link" :href="item.url"> {{ item.url }} </a>
-      </div>
-    </li>
-  </ul>
+  <li class="list-group-item">
+    <div class="item-top">
+      <img class="item-top-img" :src="avatar" alt="" />
+    </div>
+    <div class="item-bottom">
+      <p class="item-bottom-name">{{ login }}</p>
+      <a class="item-bottom-link" :href="url"> {{ url }} </a>
+    </div>
+  </li>
 </template>
 <script>
 export default {
   props: {
-    data: Array,
+    person: Object,
+  },
+  computed: {
+    avatar() {
+      return this.person.avatar_url;
+    },
+    login() {
+      return this.person.login;
+    },
+    url() {
+      return this.person.html_url;
+    },
   },
 };
 </script>

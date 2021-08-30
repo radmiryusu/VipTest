@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <personCard
+    <person-card
       :avatar="this.Profile.avatar_url"
       :url="this.Profile.html_url"
       :login="this.Profile.login"
@@ -11,8 +11,8 @@
         <h2>Фоловеры</h2>
       </div>
       <div class="content_sub-list">
-        <SublList :data="Subscribers" />
-        <Error v-if="Subscribers.length === 0"></Error>
+        <sub-list v-if="Subscribers.length > 0" :data="Subscribers" />
+        <error v-else />
       </div>
     </div>
     <div class="content_repos">
@@ -20,23 +20,16 @@
         <h2>Репозитории пользователя</h2>
       </div>
       <div class="content_repos-list">
-        <ul class="list-group">
-          <RepList
-            v-for="item in Reposit"
-            :key="item.id"
-            :RepList="item"
-          ></RepList>
-        </ul>
-
-        <Error v-if="Reposit.length === 0"></Error>
+        <rep-list v-if="Reposit.length > 0" :data="Reposit" />
+        <error v-else />
       </div>
     </div>
   </div>
 </template>
 <script>
-import Error from "@/components/DataError.vue";
-import SublList from "@/components/list/subscribers.vue";
-import RepList from "@/components/list/repositor.vue";
+import Error from "@/components/skeleton/DataError.vue";
+import SublList from "@/components/profile/subscribers.vue";
+import RepList from "@/components/profile/repositori.vue";
 import personCard from "../components/profile/personCard.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {

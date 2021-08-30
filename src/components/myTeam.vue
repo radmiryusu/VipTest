@@ -7,7 +7,9 @@
             <h2 class="team-title-heading">Cписок команды</h2>
           </div>
           <div class="team-sort">
-            <b-button @click="SortFriend()" variant="btn btn-outline-secondary"
+            <b-button
+              @click="sortFriend(true)"
+              variant="btn btn-outline-secondary"
               >sort</b-button
             >
           </div>
@@ -25,7 +27,7 @@
           </ul>
         </div>
         <div class="team-button">
-          <b-button @click="DeletPerson()" variant="outline-danger"
+          <b-button @click="deletPerson()" variant="outline-danger"
             >delet</b-button
           >
         </div>
@@ -39,9 +41,7 @@
             <input
               class="users-serch-input"
               type="text"
-              name=""
-              id=""
-              @change="SearchPerson"
+              @change="searchPerson"
               v-model="serchData"
             />
           </div>
@@ -50,10 +50,10 @@
           <ul class="users_list">
             <ListTeam
               :id="item.id"
-              @click.native="ClassTrue(item.id, AllPerson)"
+              @click.native="ClassTrue(item.id, allPerson)"
               class="users_list-item"
               :class="{ active: trueId === item.id }"
-              v-for="item in SearchPerson"
+              v-for="item in searchPerson"
               :key="item.id"
               :person="item"
             ></ListTeam>
@@ -89,9 +89,9 @@ export default {
     this.dataPersons();
   },
   computed: {
-    ...mapGetters(["AllPerson"]),
-    SearchPerson() {
-      return this.AllPerson.filter(
+    ...mapGetters(["allPerson"]),
+    searchPerson() {
+      return this.allPerson.filter(
         (item) => !item.login.indexOf(this.serchData)
       );
     },
@@ -99,31 +99,27 @@ export default {
   methods: {
     ...mapActions(["dataPersons", "newPersonsList"]),
     ClassTrue(id, list) {
-      for (let item of list) {
-        if (id === item.id) {
-          this.trueId = id;
-        }
+      if (list.length > 0 && id !== undefined) {
+        list.forEach((item) => {
+          if (id === item.id) this.trueId = id;
+        });
       }
     },
     addFriend() {
-      this.AllPerson.forEach((item, index) => {
+      this.allPerson.forEach((item, index) => {
         if (item.id === this.trueId) {
           this.listFriends.push(item);
-          let allPerson = this.AllPerson;
-          allPerson.splice(index, 1);
-          this.trueId = "";
+          this.allPerson.splice(index, 1);
           this.dataPersons(allPerson);
+          this.trueId = "";
         }
       });
     },
-    DeletPerson() {
+    deletPerson() {
       this.listFriends.forEach((item, index) => {
         if (item.id === this.trueId) {
           this.listFriends.splice(index, 1);
-          let data = [];
-          this.AllPerson.forEach((item) => {
-            data.push(item);
-          });
+          let data = this.allPerson.map((person) => person);
           data.push(item);
           this.newPersonsList(data);
           this.trueId = "";
@@ -131,8 +127,8 @@ export default {
       });
     },
     //сортирует при добавлении, поэтому сначала меняется состояние
-    SortFriend() {
-      this.sortFriends = !this.sortFriends;
+    sortFriend(convert = false) {
+      this.sortFriends = convert ? !this.sortFriends : this.sortFriends;
       this.listFriends.sort(function (a, b) {
         if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
         if (a.login.toLowerCase() < b.login.toLowerCase()) return -1;
@@ -142,13 +138,8 @@ export default {
     },
   },
   watch: {
-    AllPerson() {
-      this.listFriends.sort(function (a, b) {
-        if (a.login.toLowerCase() > b.login.toLowerCase()) return 1;
-        if (a.login.toLowerCase() < b.login.toLowerCase()) return -1;
-        return 0;
-      });
-      if (this.sortFriends) this.listFriends.reverse();
+    allPerson() {
+      this.sortFriend();
     },
   },
 };

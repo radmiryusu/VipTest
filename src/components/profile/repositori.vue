@@ -1,62 +1,28 @@
 <template>
-  <li class="list-group-item">
-    <div class="item-top">
-      <div class="item-info">
-        <div class="item-info-top">
-          <a class="item-name" :href="HtmlUrl">
-            {{ name }}
-          </a>
-          <p class="item-language">({{ language }})</p>
-        </div>
-        <div class="item-info-bottom">
-          <p class="item-date">
-            {{ dateCreate(date) }}
-          </p>
-        </div>
-      </div>
-      <div class="item-btn">
-        <a class="item-copy btn btn-outline-primary" :href="CloneUrl">Копировать</a>
-      </div>
-    </div>
-    <div class="item-bottom">
-      <p class="item-description">
-        {{ description }}
-      </p>
-    </div>
-  </li>
+  <v-card>
+    <v-list-item v-for="(item, index) of reposit" :key="index">
+      <v-list-item-content>
+        <v-list-item-title> </v-list-item-title>
+        <v-list-item-subtitle> </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+  </v-card>
 </template>
 <script>
 export default {
-  
   props: {
-    RepList: Object,
+    data: Array,
   },
   computed: {
-    name() {
-      return this.RepList.name;
+    reposit() {
+      return this.data;
     },
-    description() {
-      return this.RepList.description;
-    },
-    language() {
-      return this.RepList.language;
-    },
-    HtmlUrl() {
-      return this.RepList.html_url;
-    },
-    CloneUrl() {
-      return this.RepList.clone_url;
-    },
-    date() {
-      return this.RepList.created_at;
+    dateCreate() {
+      return this.date ? Intl.DateTimeFormat("ru").format(new Date()) : "";
     },
   },
-  methods: {
-    dateCreate(date) {
-      const intl = Intl.DateTimeFormat("ru");
-      const newDate = new Date(date);
-      return intl.format(newDate);
-    },
+  mounted() {
+    console.log(this.data);
   },
 };
 </script>
@@ -83,18 +49,17 @@ export default {
     text-align: left;
     color: #bababa;
   }
-  &-btn{
-      width: 150px;
-      height: 40px;
+  &-btn {
+    width: 150px;
+    height: 40px;
   }
-  &-copy{
-      height: 100%;
-      width: 100%;
-      line-height: 30px;
-      
+  &-copy {
+    height: 100%;
+    width: 100%;
+    line-height: 30px;
   }
-  &-description{
-      text-align: left;
+  &-description {
+    text-align: left;
   }
 }
 </style>
